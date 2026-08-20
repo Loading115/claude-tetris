@@ -1,0 +1,72 @@
+name: Claude Issue Triage
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Issue Triage
+        id: claude-triage
+        uses: anthropics/claude-code-action@v1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: >-
+            --allowedTools "Bash(gh issue view:*),Bash(gh issue edit:*),Bash(gh label list:*)"
+          prompt: |
+            Eres el bot de triage de issues del repositorio claude-tetris: un
+            Tetris en JavaScript vanilla + HTML5 Canvas, sin frameworks ni
+            build step (archivos: index.html, style.css, game.js).
+
+            Tu única tarea es leer el issue #${{ github.event.issue.number }}
+            y asignarle las labels apropiadas del set existente del repo.
+
+            Pasos:
+            1. Ejecuta:
+               gh issue view ${{ github.event.issue.number }} --json title,body,labels
+               para leer el título, cuerpo y labels ya aplicadas.
+            2. Elige entre 1 y 3 labels de esta lista cerrada (no existen otras,
+               no crees ninguna nueva, no uses variantes de estos nombres):
+               - bug: algo del juego no funciona (colisión, rotación, spawn,
+                 puntuación, líneas que no se limpian, etc.).
+               - enhancement: se pide una funcionalidad nueva que hoy no existe
+                 (hold piece, niveles, sonido, multijugador, etc.).
+               - documentation: el issue trata sobre README, CLAUDE.md o
+                 comentarios/documentación del código, no sobre el juego en sí.
+               - question: el autor pide información o aclaración, no cambia
+                 código.
+               - accessibility: contraste de colores, soporte de teclado,
+                 lectores de pantalla, tamaños de texto/controles.
+               - good first issue: el cambio descrito es pequeño y aislado,
+                 razonablemente resoluble en un solo archivo por alguien nuevo
+                 en el proyecto.
+               - help wanted: el issue pide explícitamente colaboración externa.
+               - duplicate: el contenido coincide claramente con otro issue que
+                 ya conozcas por el título/cuerpo (solo si hay evidencia clara
+                 en el propio texto, no inventes duplicados).
+               - invalid: el issue no aplica al proyecto o carece de sentido.
+               - wontfix: el propio autor indica que no espera que se resuelva,
+                 o el issue pide algo claramente fuera de alcance de un Tetris
+                 vanilla (p. ej. reescribir todo en otro framework).
+            3. Si ninguna label encaja con confianza razonable, no apliques
+               ninguna y termina sin error — no es un fallo.
+            4. Si decides aplicar labels, ejecuta una única vez:
+               gh issue edit ${{ github.event.issue.number }} --add-label "label1,label2"
+               No repitas labels que el issue ya tenga.
+            5. No publiques ningún comentario en el issue. No modifiques el
+               título ni el cuerpo. No cierres el issue. Tu única acción
+               permitida es --add-label.
