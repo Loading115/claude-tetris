@@ -26,7 +26,7 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: >-
-            --allowedTools "Bash(gh issue view:*),Bash(gh issue edit:*),Bash(gh label list:*)"
+            --allowedTools "Bash(gh issue view:*),Bash(gh issue edit:*),Bash(gh issue comment:*),Bash(gh label list:*)"
           prompt: |
             Eres el bot de triage de issues del repositorio claude-tetris: un
             Tetris en JavaScript vanilla + HTML5 Canvas, sin frameworks ni
@@ -67,6 +67,11 @@ jobs:
             4. Si decides aplicar labels, ejecuta una única vez:
                gh issue edit ${{ github.event.issue.number }} --add-label "label1,label2"
                No repitas labels que el issue ya tenga.
-            5. No publiques ningún comentario en el issue. No modifiques el
-               título ni el cuerpo. No cierres el issue. Tu única acción
-               permitida es --add-label.
+            5. Si aplicaste al menos una label nueva, publica un único
+               comentario breve (2-3 líneas) explicando por qué elegiste esas
+               labels, con este formato:
+               gh issue comment ${{ github.event.issue.number }} --body "🏷️ Labels aplicadas: \`label1\`, \`label2\` — <razón breve en una frase>."
+               Si no aplicaste ninguna label nueva, no comentes nada.
+            6. No modifiques el título ni el cuerpo del issue. No lo cierres.
+               Tus únicas acciones permitidas son --add-label y, como mucho,
+               un comentario explicativo.
