@@ -20,6 +20,8 @@
   --btn-hover-bg: #9bbdff;
   --toggle-bg: #22223a;
   --toggle-border: #3a3a5a;
+  --pause-btn-bg: #1c1c2a;
+  --pause-select-bg: #22223a;
 }
 
 :root[data-theme='light'] {
@@ -44,6 +46,8 @@
   --btn-hover-bg: #5470e0;
   --toggle-bg: #e5e7ef;
   --toggle-border: #c9ced9;
+  --pause-btn-bg: #eef0f7;
+  --pause-select-bg: #ffffff;
 }
 
 *, *::before, *::after {
@@ -218,7 +222,7 @@ kbd {
   color: var(--overlay-score-color);
 }
 
-#restart-btn {
+.btn {
   margin-top: 8px;
   background: var(--btn-bg);
   color: var(--btn-color);
@@ -232,6 +236,62 @@ kbd {
   transition: background 0.15s;
 }
 
-#restart-btn:hover {
+.btn:hover {
   background: var(--btn-hover-bg);
+}
+
+/* ---- Pausa ---- */
+#pause-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--overlay-title-color);
+  margin-bottom: 4px;
+}
+
+.pause-controls-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--pause-btn-bg);
+  border-radius: 6px;
+  padding: 10px 16px;
+}
+
+.pause-controls-list.hidden {
+  display: none;
+}
+
+.pause-controls-list li {
+  font-size: 12px;
+  color: var(--control-color);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+}
+
+.pause-level-select {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.pause-level-select label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--label-color);
+  font-weight: 600;
+}
+
+.pause-level-select select {
+  background: var(--pause-select-bg);
+  color: var(--fg);
+  border: 1px solid var(--kbd-border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
 }
