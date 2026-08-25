@@ -235,3 +235,55 @@ kbd {
 #restart-btn:hover {
   background: var(--btn-hover-bg);
 }
+
+/* ---- Skins ---- */
+.skin-select {
+  background: var(--toggle-bg);
+  border: 1px solid var(--toggle-border);
+  border-radius: 6px;
+  height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.skin-select:hover {
+  border-color: var(--title-color);
+}
+
+:root[data-skin='neon'] {
+  --board-border: #0ff;
+  --board-bg: #05050a;
+  --grid-color: rgba(0, 255, 255, 0.15);
+}
+
+:root[data-theme='light'][data-skin='neon'] {
+  --board-border: #0ff;
+  --board-bg: #05050a;
+  --grid-color: rgba(0, 255, 255, 0.2);
+}
+
+:root[data-skin='pastel'] {
+  --board-border: #d8c9e8;
+  --board-bg: #fdf6ff;
+  --grid-color: #ecdff2;
+}
+
+:root[data-theme='light'][data-skin='pastel'] {
+  --board-border: #e3d5f0;
+  --board-bg: #fffbff;
+  --grid-color: #f0e5f7;
+}
+
+:root[data-skin='pixel'] {
+  --board-border: #444;
+  --board-bg: #12121a;
+  --grid-color: #2e2e3a;
+}
+
+:root[data-theme='light'][data-skin='pixel'] {
+  --board-border: #999;
+  --board-bg: #e8e8e8;
+  --grid-color: #c9c9c9;
+}
